@@ -3,39 +3,81 @@ const problem2 = require("../problem2.js");
 
 const cb = (error, data) => {
     let path = "../output/UpperCase.txt";
-    fs.writeFile(path, data.toUpperCase(), (err) => {
-        if (err) throw err;
-    });
-    fs.writeFile("../output/filenames.txt", path.substring(path.indexOf("U"), path.length), (err) => {
-            if (err) {
-                throw err;
-            } else {
-                deleteFiles("../output/UpperCase.txt");
-            }
-        }
-    );
+    let upperCaseData=data.toUpperCase();
 
-    path = "../output/LowerCase.txt";
+    //Creating a new file UpperCase.txt
+    fs.writeFile(path, upperCaseData, (err) => {
+        if (err) {
+            throw err;
+        } else {
+            let content=path.substring(path.indexOf("U"), path.length);
 
-    fs.writeFile(path, data.toLowerCase(), (err) => {
-        if (err) throw err;
-    });
-    fs.appendFile("../output/filenames.txt", "\n" + path.substring(path.indexOf("L"), path.length), (err) => {
-            if (err) {
-                throw err;
-            } else {
-                deleteFiles("../output/LowerCase.txt");
-            }
+            //Writing name of uppercase file in filesname.txt
+            fs.writeFile("../output/filenames.txt", content, (err) => {
+                    if (err) throw err;
+                }
+            );
 
-            fs.readFile("../output/filenames.txt", "utf-8", (err, data) => {
-                console.log(data);
+            //Reading Uppercase.txt
+            fs.readFile(path, "utf-8", (err, data) => {
+                let lowerCaseSentence = data.toLowerCase().replace(/[\r\n]+/gm, " ").split(".").join("\n");
+                path = "../output/LowerCase.txt";
+
+                //Creating a new file LowerCase.txt and writing separate sentences into the file
+                fs.writeFile(path, lowerCaseSentence, (err) => {
+                    if (err) {
+                        throw err;
+                    } else {
+                        content="\n" + path.substring(path.indexOf("L"), path.length);
+
+                        //Appending the LowerCase.txt filename in filenames.txt
+                        fs.appendFile("../output/filenames.txt", content,(err) => {
+                                if (err) throw err;
+                            }
+                        );
+
+                        //Reading Lowercase.txt
+                        fs.readFile(path, "utf-8", (err, data) => {
+                            let sortedSentences = data.split("\n").sort().join("\n");
+                            path = "../output/Sorted.txt";
+                            
+                            //Creating a new file Sorted.txt and writing sorted order of sentences
+                            fs.writeFile(path, sortedSentences, (err) => {
+                                if (err) {
+                                    throw err;
+                                } else {
+                                    content="\n" +path.substring(path.indexOf("S"),path.length)
+
+                                    //Appending the Sorted.txt filename in filenames.txt
+                                    fs.appendFile("../output/filenames.txt",content,(err) => {
+                                            if (err) {
+                                                throw err;
+                                            } else {
+                                                //Reading filenames.txt and passing path with that filename
+                                                fs.readFile("../output/filenames.txt","utf-8",(err, data) => {
+                                                        let fileName =data.split("\n");
+
+                                                        fileName.forEach((element) => {
+                                                                deleteFiles("../output/" +element);
+                                                            }
+                                                        );
+                                                    }
+                                                );
+                                            }
+                                        }
+                                    );
+                                }
+                            });
+                        });
+                    }
+                });
             });
         }
-    );
+    });
 };
 
-const deleteFiles = (filepath) => {
-    fs.unlink(filepath, (error) => {
+const deleteFiles = (filePath) => {
+    fs.unlink(filePath, (error) => {
         if (error) throw error;
     });
 };
