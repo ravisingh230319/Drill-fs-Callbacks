@@ -1,0 +1,22 @@
+{
+  "name": "fs-callbacks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ravisingh230319/Drill-fs-Callbacks.git"
+  },
+  "author": "Ravi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ravisingh230319/Drill-fs-Callbacks/issues"
+  },
+  "homepage": "https://github.com/ravisingh230319/Drill-fs-Callbacks#readme"
+}
